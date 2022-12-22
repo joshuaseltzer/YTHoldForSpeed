@@ -99,7 +99,7 @@
                 [playbackRateSectionRows addObject:rateSection];
             }
             YTSettingsPickerViewController *playbackRatePicker = [[%c(YTSettingsPickerViewController) alloc] initWithNavTitle:playbackRateTitle
-                pickerSectionTitle:playbackRateTitle
+                pickerSectionTitle:[playbackRateTitle uppercaseString]
                 rows:playbackRateSectionRows
                 selectedItemIndex:[YTHFSPrefsManager playbackRateOptionForValue:[YTHFSPrefsManager togglePlaybackRate]]
                 parentResponder:[self parentResponder]];
@@ -130,7 +130,7 @@
                 [holdDurationSectionRows addObject:holdDurationSection];
             }
             YTSettingsPickerViewController *holdDurationPicker = [[%c(YTSettingsPickerViewController) alloc] initWithNavTitle:holdDurationTitle
-                pickerSectionTitle:holdDurationTitle
+                pickerSectionTitle:[holdDurationTitle uppercaseString]
                 rows:holdDurationSectionRows
                 selectedItemIndex:[YTHFSPrefsManager holdDurationOptionForValue:[YTHFSPrefsManager holdDuration]]
                 parentResponder:[self parentResponder]];
