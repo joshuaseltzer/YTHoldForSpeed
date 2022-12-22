@@ -112,14 +112,7 @@ static NSNumberFormatter *sYTHFSDecimalNumberFormatter;
 // return the appropriate string representation of the hold duration for the given value
 + (NSString *)holdDurationStringForValue:(CGFloat)value
 {
-    // check to see if the value requires a plural "seconds"
-    NSString *formatString = nil;
-    if (value != 1.0) {
-        formatString = [YTHFSPrefsManager localizedStringForKey:@"X_SECONDS" withDefaultValue:@"%@ seconds"];
-    } else {
-        formatString = [YTHFSPrefsManager localizedStringForKey:@"X_SECOND" withDefaultValue:@"%@ second"];
-    }
-    return [NSString stringWithFormat:formatString, [[YTHFSPrefsManager decimalNumberFormatter] stringFromNumber:[NSNumber numberWithFloat:value]]];
+    return [NSString stringWithFormat:[YTHFSPrefsManager localizedStringForKey:@"X_SECONDS" withDefaultValue:@"%@ seconds"], [[YTHFSPrefsManager decimalNumberFormatter] stringFromNumber:[NSNumber numberWithFloat:value]]];
 }
 
 // return the appropriate string representation of the playback rate for the given value
