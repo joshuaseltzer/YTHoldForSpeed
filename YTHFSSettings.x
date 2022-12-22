@@ -54,7 +54,7 @@
     YTSettingsViewController *settingsViewController = [self valueForKey:@"_settingsViewControllerDelegate"];
 
     // create a settings section to enable or disable the hold gesture
-    YTSettingsSectionItem *holdGestureSection = [YTSettingsSectionItemClass switchItemWithTitle:[YTHFSPrefsManager localizedStringForKey:@"HOLD_GESTURE" withDefaultValue:@"Hold Gesture"]
+    YTSettingsSectionItem *holdGestureSection = [YTSettingsSectionItemClass switchItemWithTitle:[YTHFSPrefsManager localizedStringForKey:@"HOLD_GESTURE" withDefaultValue:@"Hold gesture"]
         titleDescription:[YTHFSPrefsManager localizedStringForKey:@"HOLD_GESTURE_DESC" withDefaultValue:@"Tap and hold anywhere in the video player to toggle the playback speed between \"Normal\" (i.e. 1.0x) and the selected toggle speed.\n\nPlease be aware that by enabling this feature, the stock \"seek anywhere\" gesture will be disabled."]
         accessibilityIdentifier:nil
         switchOn:[YTHFSPrefsManager holdGestureEnabled]
@@ -66,7 +66,7 @@
     [mainSectionItems addObject:holdGestureSection];
 
     // create a settings section to enable or disable the hold gesture
-    YTSettingsSectionItem *autoApplySpeedSection = [YTSettingsSectionItemClass switchItemWithTitle:[YTHFSPrefsManager localizedStringForKey:@"AUTO_APPLY_SPEED" withDefaultValue:@"Automatically Apply Speed"]
+    YTSettingsSectionItem *autoApplySpeedSection = [YTSettingsSectionItemClass switchItemWithTitle:[YTHFSPrefsManager localizedStringForKey:@"AUTO_APPLY_SPEED" withDefaultValue:@"Automatically apply speed"]
         titleDescription:[YTHFSPrefsManager localizedStringForKey:@"AUTO_APPLY_SPEED_DESC" withDefaultValue:@"When enabled, the selected playback speed will automatically be applied when a new video player is launched."]
         accessibilityIdentifier:nil
         switchOn:[YTHFSPrefsManager autoApplyRateEnabled]
@@ -78,7 +78,7 @@
     [mainSectionItems addObject:autoApplySpeedSection];
 
     // create a settings section that allows the selection of the playback rate
-    NSString *playbackRateTitle = [YTHFSPrefsManager localizedStringForKey:@"TOGGLE_SPEED" withDefaultValue:@"Toggle Speed"];
+    NSString *playbackRateTitle = [YTHFSPrefsManager localizedStringForKey:@"TOGGLE_SPEED" withDefaultValue:@"Toggle speed"];
     YTSettingsSectionItem *toggleRateSection = [YTSettingsSectionItemClass itemWithTitle:playbackRateTitle
         titleDescription:[YTHFSPrefsManager localizedStringForKey:@"TOGGLE_SPEED_DESC" withDefaultValue:@"The speed that the video player will toggle between when the hold gesture is invoked."]
         accessibilityIdentifier:nil
@@ -109,7 +109,7 @@
     [mainSectionItems addObject:toggleRateSection];
 
     // create a settings section that allows the selection of the hold duration
-    NSString *holdDurationTitle = [YTHFSPrefsManager localizedStringForKey:@"HOLD_DURATION" withDefaultValue:@"Hold Duration"];
+    NSString *holdDurationTitle = [YTHFSPrefsManager localizedStringForKey:@"HOLD_DURATION" withDefaultValue:@"Hold duration"];
     YTSettingsSectionItem *holdDurationSection = [YTSettingsSectionItemClass itemWithTitle:holdDurationTitle
         titleDescription:[YTHFSPrefsManager localizedStringForKey:@"HOLD_DURATION_DESC" withDefaultValue:@"The amount of time (in seconds) that is required for the hold gesture to toggle the speed of the video player."]
         accessibilityIdentifier:nil
@@ -141,7 +141,7 @@
 
     // if available, add a settings section to enable or disable haptic feedback
     if ([YTHFSPrefsManager supportsHapticFeedback]) {
-        YTSettingsSectionItem *hapticFeedbackSection = [YTSettingsSectionItemClass switchItemWithTitle:[YTHFSPrefsManager localizedStringForKey:@"HAPTIC_FEEDBACK" withDefaultValue:@"Haptic Feedback"]
+        YTSettingsSectionItem *hapticFeedbackSection = [YTSettingsSectionItemClass switchItemWithTitle:[YTHFSPrefsManager localizedStringForKey:@"HAPTIC_FEEDBACK" withDefaultValue:@"Haptic feedback"]
             titleDescription:[YTHFSPrefsManager localizedStringForKey:@"HAPTIC_FEEDBACK_DESC" withDefaultValue:@"Use haptic feedback to indicate that the speed of the video player was toggled."]
             accessibilityIdentifier:nil
             switchOn:[YTHFSPrefsManager hapticFeedbackEnabled]
@@ -156,7 +156,7 @@
     // add all of our settings item to the main settings list
     [settingsViewController setSectionItems:mainSectionItems
                                 forCategory:kYTHFSHoldForSpeedSection
-                                      title:[YTHFSPrefsManager localizedStringForKey:@"HOLD_FOR_SPEED" withDefaultValue:@"Hold For Speed"]
+                                      title:[YTHFSPrefsManager localizedStringForKey:@"HOLD_FOR_SPEED" withDefaultValue:@"Hold for speed"]
                            titleDescription:nil
                                headerHidden:NO];
 }
