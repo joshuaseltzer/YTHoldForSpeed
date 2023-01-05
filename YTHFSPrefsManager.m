@@ -173,9 +173,6 @@ static NSNumberFormatter *sYTHFSDecimalNumberFormatter;
             sYTHFSBundle = [NSBundle bundleWithPath:bundlePath];
         } else {
             sYTHFSBundle = [NSBundle bundleWithPath:@"/Library/Application Support/YTHoldForSpeed.bundle"];
-            if (!sYTHFSBundle) {
-                sYTHFSBundle = [NSBundle bundleWithPath:@"/var/jb/Library/Application Support/YTHoldForSpeed.bundle"];
-            }
         }
     });
     return sYTHFSBundle;
