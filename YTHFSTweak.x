@@ -182,6 +182,14 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 	}
 }
 
+// override the long press gesture recognizer that is used to invoke the seek gesture (introduced with YouTube 18.05.2)
+- (void)setLongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer
+{
+	if (![YTHFSPrefsManager holdGestureEnabled]) {
+		%orig;
+	}
+}
+
 %end
 
 %ctor {
