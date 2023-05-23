@@ -11,17 +11,17 @@
 #import <rootless.h>
 
 // define constants for the keys used to interact with the settings within user defaults
-#define kYTHFSHoldGestureEnabledKey	    @"YTHFSHoldGestureEnabled"
+#define kYTHFSHoldGestureEnabledKey     @"YTHFSHoldGestureEnabled"
 #define kYTHFSAutoApplyRateEnabledKey   @"YTHFSAutoApplyRateEnabled"
-#define kYTHFSTogglePlaybackRateKey	    @"YTHFSTogglePlaybackRate"
-#define kYTHFSHoldDurationKey	        @"YTHFSHoldDuration"
-#define kYTHFSHapticFeedbackEnabledKey	@"YTHFSHapticFeedbackEnabled"
+#define kYTHFSTogglePlaybackRateKey     @"YTHFSTogglePlaybackRate"
+#define kYTHFSHoldDurationKey           @"YTHFSHoldDuration"
+#define kYTHFSHapticFeedbackEnabledKey  @"YTHFSHapticFeedbackEnabled"
 
 // define some constants to define the default preference values
 #define kYTHFSDefaultHoldGestureEnabled     YES
 #define kYTHFSDefaultAutoApplyRateEnabled   NO
-#define kYTHFSDefaultTogglePlaybackRate		1.5
-#define kYTHFSDefaultHoldDuration	        1.0
+#define kYTHFSDefaultTogglePlaybackRate     1.5
+#define kYTHFSDefaultHoldDuration           1.0
 
 // create static variables that will be determined once
 static NSBundle *sYTHFSBundle;

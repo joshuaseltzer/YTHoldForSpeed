@@ -12,7 +12,7 @@ TWEAK_NAME = ytholdforspeed
 ytholdforspeed_FILES = YTHFSTweak.x YTHFSSettings.x YTHFSPrefsManager.m
 ytholdforspeed_CFLAGS = -fobjc-arc
 
-THEOS_PACKAGE_BASE_VERSION = 1.0.2
-_THEOS_INTERNAL_PACKAGE_VERSION = 1.0.2
+THEOS_PACKAGE_BASE_VERSION = 1.0.3
+_THEOS_INTERNAL_PACKAGE_VERSION = 1.0.3
 
 include $(THEOS_MAKE_PATH)/tweak.mk
