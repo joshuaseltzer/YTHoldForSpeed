@@ -5,14 +5,13 @@ TARGET := iphone:clang:14.5:13.0
 endif
 INSTALL_TARGET_PROCESSES = YouTube
 
+PACKAGE_VERSION=$(THEOS_PACKAGE_BASE_VERSION)
+
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = ytholdforspeed
 
 ytholdforspeed_FILES = YTHFSTweak.x YTHFSSettings.x YTHFSPrefsManager.m
 ytholdforspeed_CFLAGS = -fobjc-arc
-
-THEOS_PACKAGE_BASE_VERSION = 1.0.3
-_THEOS_INTERNAL_PACKAGE_VERSION = 1.0.3
 
 include $(THEOS_MAKE_PATH)/tweak.mk
