@@ -9,8 +9,8 @@ PACKAGE_VERSION=$(THEOS_PACKAGE_BASE_VERSION)
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = ytholdforspeed
-ytholdforspeed_FILES = YTHFSTweak.x YTHFSSettings.x YTHFSPrefsManager.m
-ytholdforspeed_CFLAGS = -fobjc-arc
+TWEAK_NAME = YTHoldForSpeed
+$(TWEAK_NAME)_FILES = YTHFSTweak.x YTHFSSettings.x YTHFSPrefsManager.m
+$(TWEAK_NAME)_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
