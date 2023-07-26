@@ -1,4 +1,4 @@
-"HOLD_FOR_SPEED" = "再生速度を切り替えるためにホールド";
+"HOLD_FOR_SPEED" = "Hold for speed";
 "NORMAL" = "通常";
 "X_SECONDS" = "%@ 秒";
 "HOLD_GESTURE" = "ホールドジェスチャー";
