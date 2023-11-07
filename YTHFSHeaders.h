@@ -32,6 +32,17 @@
 
 @end
 
+// overlay manager that is responsible for making changes to the playback rate (v18.43.4 and higher)
+@interface YTPlayerOverlayManager : NSObject
+
+// returns the current playback speed (introduced in v18.43.4)
+- (float)currentPlaybackRateForVarispeedSwitchController:(YTVarispeedSwitchController *)varispeedSwitchController;
+
+// invoked whenever the playback speed selection is changed (introduced in v18.43.4)
+- (void)varispeedSwitchController:(YTVarispeedSwitchController *)varispeedSwitchController didSelectRate:(float)rate;
+
+@end
+
 @interface YTPlayerViewController : UIViewController
 
 // the main view for viewing videos
@@ -43,13 +54,16 @@
 // the overlay controller that will be used to potentially hide the player controls
 @property (readonly, nonatomic) UIViewController *contentVideoPlayerOverlay;
 
+// the overlay manager which is responsible for changing the playback rate in later versions of the app
+@property (retain, nonatomic) YTPlayerOverlayManager *overlayManager;
+
 // returns whether or not the play controls are currently hidden or visible
 - (BOOL)arePlayerControlsHidden;
 
-// returns the current playback speed
+// returns the current playback speed (this method no longer exists in this class starting with v18.43.4)
 - (float)currentPlaybackRateForVarispeedSwitchController:(YTVarispeedSwitchController *)varispeedSwitchController;
 
-// invoked whenever the playback speed selection is changed
+// invoked whenever the playback speed selection is changed (this method no longer exists starting with v18.43.4)
 - (void)varispeedSwitchController:(YTVarispeedSwitchController *)varispeedSwitchController didSelectRate:(float)rate;
 
 @end

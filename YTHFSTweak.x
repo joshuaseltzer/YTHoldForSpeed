@@ -13,6 +13,9 @@
 // the long press gesture that will be created and added to the player view
 @property (nonatomic, retain) UILongPressGestureRecognizer *YTHFSLongPressGesture;
 
+// the controller that is responsible for invoking the methods to change the playback rate of the video
+@property (nonatomic, retain) id YTHFSVarispeedManagerController;
+
 // switch between the user-selected playback rate and the normal playback rate, invoked either via the hold gesture or
 // automatically when the video starts (dependent on settings)
 - (void)YTHFSSwitchPlaybackRate;
@@ -62,6 +65,13 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
             // update the minimum press duration with whatever the user set in the settings
             playerViewController.YTHFSLongPressGesture.minimumPressDuration = [YTHFSPrefsManager holdDuration];
         }
+
+        // check to see which controller will be responsible for changing the playback rate of the video
+        if ([playerViewController.overlayManager respondsToSelector:@selector(currentPlaybackRateForVarispeedSwitchController:)]) {
+            playerViewController.YTHFSVarispeedManagerController = playerViewController.overlayManager;
+        } else if ([playerViewController respondsToSelector:@selector(currentPlaybackRateForVarispeedSwitchController:)]) {
+            playerViewController.YTHFSVarispeedManagerController = playerViewController;
+        }
     }
 
     %orig;
@@ -73,6 +83,9 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 
 // the long press gesture that will be created and added to the player view
 %property (nonatomic, retain) UILongPressGestureRecognizer *YTHFSLongPressGesture;
+
+// the controller that is responsible for invoking the methods to change the playback rate of the video
+%property (nonatomic, retain) id YTHFSVarispeedManagerController;
 
 %new
 - (void)YTHFSHandleLongPressGesture:(UILongPressGestureRecognizer *)longPressGestureRecognizer
@@ -88,42 +101,44 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 %new
 - (void)YTHFSSwitchPlaybackRate
 {
-    NSString *feedbackTitle = nil;
-    YTHFSFeedbackDirection feedbackDirection = kYTHFSFeedbackDirectionForward;
-    CGFloat currentPlaybackRate = [self currentPlaybackRateForVarispeedSwitchController:self.varispeedController];
-    if (currentPlaybackRate != sYTHFSTogglePlaybackRate) {
-        // change to the toggle rate if the current playback rate is any other speed
-        [self varispeedSwitchController:self.varispeedController didSelectRate:sYTHFSTogglePlaybackRate];
-        feedbackTitle = [YTHFSPrefsManager playbackRateStringForValue:sYTHFSTogglePlaybackRate];
-        if (currentPlaybackRate > sYTHFSTogglePlaybackRate) {
-            feedbackDirection = kYTHFSFeedbackDirectionBackward;
+    if (self.YTHFSVarispeedManagerController != nil) {
+        NSString *feedbackTitle = nil;
+        YTHFSFeedbackDirection feedbackDirection = kYTHFSFeedbackDirectionForward;
+        CGFloat currentPlaybackRate = [self.YTHFSVarispeedManagerController currentPlaybackRateForVarispeedSwitchController:self.varispeedController];
+        if (currentPlaybackRate != sYTHFSTogglePlaybackRate) {
+            // change to the toggle rate if the current playback rate is any other speed
+            [self.YTHFSVarispeedManagerController varispeedSwitchController:self.varispeedController didSelectRate:sYTHFSTogglePlaybackRate];
+            feedbackTitle = [YTHFSPrefsManager playbackRateStringForValue:sYTHFSTogglePlaybackRate];
+            if (currentPlaybackRate > sYTHFSTogglePlaybackRate) {
+                feedbackDirection = kYTHFSFeedbackDirectionBackward;
+            }
+        } else {
+            // otherwise switch back to the default rate
+            [self.YTHFSVarispeedManagerController varispeedSwitchController:self.varispeedController didSelectRate:kYTHFSNormalPlaybackRate];
+            feedbackTitle = [YTHFSPrefsManager localizedStringForKey:@"NORMAL" withDefaultValue:@"Normal"];
+            if (currentPlaybackRate > kYTHFSNormalPlaybackRate) {
+                feedbackDirection = kYTHFSFeedbackDirectionBackward;
+            }
         }
-    } else {
-        // otherwise switch back to the default rate
-        [self varispeedSwitchController:self.varispeedController didSelectRate:kYTHFSNormalPlaybackRate];
-        feedbackTitle = [YTHFSPrefsManager localizedStringForKey:@"NORMAL" withDefaultValue:@"Normal"];
-        if (currentPlaybackRate > kYTHFSNormalPlaybackRate) {
-            feedbackDirection = kYTHFSFeedbackDirectionBackward;
+
+        // if the overlay controls are displayed, ensure to hide them before displaying the visual indicator
+        if (![self arePlayerControlsHidden] && [self.contentVideoPlayerOverlay isKindOfClass:objc_getClass("YTMainAppVideoPlayerOverlayViewController")]) {
+            YTMainAppVideoPlayerOverlayViewController *overlayViewController = (YTMainAppVideoPlayerOverlayViewController *)self.contentVideoPlayerOverlay;
+            [overlayViewController hidePlayerControlsAnimated:YES];
         }
-    }
 
-    // if the overlay controls are displayed, ensure to hide them before displaying the visual indicator
-    if (![self arePlayerControlsHidden] && [self.contentVideoPlayerOverlay isKindOfClass:objc_getClass("YTMainAppVideoPlayerOverlayViewController")]) {
-        YTMainAppVideoPlayerOverlayViewController *overlayViewController = (YTMainAppVideoPlayerOverlayViewController *)self.contentVideoPlayerOverlay;
-        [overlayViewController hidePlayerControlsAnimated:YES];
-    }
+        // trigger the double tap to seek view to visibly indicate that the playback rate has changed
+        if ([self.playerView.overlayView isKindOfClass:objc_getClass("YTMainAppVideoPlayerOverlayView")]) {
+            YTMainAppVideoPlayerOverlayView *overlayView = (YTMainAppVideoPlayerOverlayView *)self.playerView.overlayView;
+            [overlayView.doubleTapToSeekView showCenteredSeekFeedbackWithTitle:feedbackTitle direction:feedbackDirection];
+        }
 
-    // trigger the double tap to seek view to visibly indicate that the playback rate has changed
-    if ([self.playerView.overlayView isKindOfClass:objc_getClass("YTMainAppVideoPlayerOverlayView")]) {
-        YTMainAppVideoPlayerOverlayView *overlayView = (YTMainAppVideoPlayerOverlayView *)self.playerView.overlayView;
-        [overlayView.doubleTapToSeekView showCenteredSeekFeedbackWithTitle:feedbackTitle direction:feedbackDirection];
-    }
-
-    // fire off haptic feedback to indicate that the playback rate changed (only applies to supported devices if enabled)
-    if (sYTHFSHapticFeedbackEnabled) {
-        UINotificationFeedbackGenerator *feedbackGenerator = [[UINotificationFeedbackGenerator alloc] init];
-        [feedbackGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
-        feedbackGenerator = nil;
+        // fire off haptic feedback to indicate that the playback rate changed (only applies to supported devices if enabled)
+        if (sYTHFSHapticFeedbackEnabled) {
+            UINotificationFeedbackGenerator *feedbackGenerator = [[UINotificationFeedbackGenerator alloc] init];
+            [feedbackGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
+            feedbackGenerator = nil;
+        }
     }
 }
 
@@ -132,14 +147,14 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 {
     %orig;
 
-    if (sYTHFSAutoApplyRateEnabled && [self.contentVideoPlayerOverlay isKindOfClass:objc_getClass("YTMainAppVideoPlayerOverlayViewController")]) {
+    if (sYTHFSAutoApplyRateEnabled && self.YTHFSVarispeedManagerController != nil && [self.contentVideoPlayerOverlay isKindOfClass:objc_getClass("YTMainAppVideoPlayerOverlayViewController")]) {
         YTMainAppVideoPlayerOverlayViewController *overlayViewController = (YTMainAppVideoPlayerOverlayViewController *)self.contentVideoPlayerOverlay;
         if (overlayViewController.isVarispeedAvailable) {
             // regardless of the current playback rate, at this point we know that the toggle rate will be applied
             sYTHFSAutoApplyRateEnabled = NO;
 
             // compare whether or not the current playback rate is what the user selected and if not, change to it now
-            if ([self currentPlaybackRateForVarispeedSwitchController:self.varispeedController] != sYTHFSTogglePlaybackRate) {
+            if ([self.YTHFSVarispeedManagerController currentPlaybackRateForVarispeedSwitchController:self.varispeedController] != sYTHFSTogglePlaybackRate) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self YTHFSSwitchPlaybackRate];
                 });
