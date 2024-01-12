@@ -7,6 +7,7 @@ This tweak was tested on various versions of the YouTube application released be
 Navigate to the Settings panel within YouTube to find a new section titled "Hold for speed." Here you can configure the following:
 
 *   Hold gesture (please be aware that by enabling this feature, the stock tap and hold gesture will be disabled)
+*   Disable stock gestures (please be aware that if the hold gesture is enabled, the stock gestures will be automatically disabled)
 *   Automatically apply speed
 *   Toggle speed
 *   Hold duration (in seconds)

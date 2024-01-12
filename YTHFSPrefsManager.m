@@ -11,17 +11,19 @@
 #import <rootless.h>
 
 // define constants for the keys used to interact with the settings within user defaults
-#define kYTHFSHoldGestureEnabledKey     @"YTHFSHoldGestureEnabled"
-#define kYTHFSAutoApplyRateEnabledKey   @"YTHFSAutoApplyRateEnabled"
-#define kYTHFSTogglePlaybackRateKey     @"YTHFSTogglePlaybackRate"
-#define kYTHFSHoldDurationKey           @"YTHFSHoldDuration"
-#define kYTHFSHapticFeedbackEnabledKey  @"YTHFSHapticFeedbackEnabled"
+#define kYTHFSHoldGestureEnabledKey             @"YTHFSHoldGestureEnabled"
+#define kYTHFSDisableStockGesturesEnabledKey    @"YTHFSDisableStockGesturesEnabled"
+#define kYTHFSAutoApplyRateEnabledKey           @"YTHFSAutoApplyRateEnabled"
+#define kYTHFSTogglePlaybackRateKey             @"YTHFSTogglePlaybackRate"
+#define kYTHFSHoldDurationKey                   @"YTHFSHoldDuration"
+#define kYTHFSHapticFeedbackEnabledKey          @"YTHFSHapticFeedbackEnabled"
 
 // define some constants to define the default preference values
-#define kYTHFSDefaultHoldGestureEnabled     YES
-#define kYTHFSDefaultAutoApplyRateEnabled   NO
-#define kYTHFSDefaultTogglePlaybackRate     1.5
-#define kYTHFSDefaultHoldDuration           1.0
+#define kYTHFSDefaultHoldGestureEnabled             NO
+#define kYTHFSDefaultDisableStockGesturesEnabled    NO
+#define kYTHFSDefaultAutoApplyRateEnabled           NO
+#define kYTHFSDefaultTogglePlaybackRate             1.5
+#define kYTHFSDefaultHoldDuration                   1.0
 
 // create static variables that will be determined once
 static NSBundle *sYTHFSBundle;
@@ -45,6 +47,7 @@ static NSNumberFormatter *sYTHFSDecimalNumberFormatter;
 + (void)registerDefaults
 {
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kYTHFSHoldGestureEnabledKey:[NSNumber numberWithBool:kYTHFSDefaultHoldGestureEnabled],
+                                                              kYTHFSDisableStockGesturesEnabledKey:[NSNumber numberWithBool:kYTHFSDefaultDisableStockGesturesEnabled],
                                                               kYTHFSAutoApplyRateEnabledKey:[NSNumber numberWithBool:kYTHFSDefaultAutoApplyRateEnabled],
                                                               kYTHFSTogglePlaybackRateKey:[NSNumber numberWithFloat:kYTHFSDefaultTogglePlaybackRate],
                                                               kYTHFSHoldDurationKey:[NSNumber numberWithFloat:kYTHFSDefaultHoldDuration],
@@ -130,6 +133,14 @@ static NSNumberFormatter *sYTHFSDecimalNumberFormatter;
 + (void)setHoldGestureEnabled:(BOOL)enabled
 {
     [[NSUserDefaults standardUserDefaults] setBool:enabled forKey:kYTHFSHoldGestureEnabledKey];
+}
++ (BOOL)disableStockGesturesEnabled
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kYTHFSDisableStockGesturesEnabledKey];
+}
++ (void)setDisableStockGesturesEnabled:(BOOL)enabled
+{
+    [[NSUserDefaults standardUserDefaults] setBool:enabled forKey:kYTHFSDisableStockGesturesEnabledKey];
 }
 + (BOOL)autoApplyRateEnabled
 {

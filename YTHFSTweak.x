@@ -180,7 +180,7 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 // override the long press gesture recognizer that is used to invoke the seek gesture
 - (void)setSeekAnywhereLongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer
 {
-    if (![YTHFSPrefsManager holdGestureEnabled]) {
+    if (![YTHFSPrefsManager holdGestureEnabled] && ![YTHFSPrefsManager disableStockGesturesEnabled]) {
         %orig;
     }
 }
@@ -188,7 +188,7 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 // override the pan gesture recognizer that is used to invoke the seek gesture
 - (void)setSeekAnywherePanGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognzier
 {
-    if (![YTHFSPrefsManager holdGestureEnabled]) {
+    if (![YTHFSPrefsManager holdGestureEnabled] && ![YTHFSPrefsManager disableStockGesturesEnabled]) {
         %orig;
     }
 }
@@ -196,7 +196,7 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 // override the long press gesture recognizer that is used to invoke the seek gesture (introduced with YouTube 18.05.2)
 - (void)setLongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer
 {
-    if (![YTHFSPrefsManager holdGestureEnabled]) {
+    if (![YTHFSPrefsManager holdGestureEnabled] && ![YTHFSPrefsManager disableStockGesturesEnabled]) {
         %orig;
     }
 }

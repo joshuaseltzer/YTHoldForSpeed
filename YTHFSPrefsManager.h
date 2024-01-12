@@ -64,6 +64,8 @@ typedef enum YTHFSPlaybackRateOption : NSInteger {
 // setters and getters for the tweak preferences
 + (BOOL)holdGestureEnabled;
 + (void)setHoldGestureEnabled:(BOOL)enabled;
++ (BOOL)disableStockGesturesEnabled;
++ (void)setDisableStockGesturesEnabled:(BOOL)enabled;
 + (BOOL)autoApplyRateEnabled;
 + (void)setAutoApplyRateEnabled:(BOOL)enabled;
 + (CGFloat)togglePlaybackRate;
