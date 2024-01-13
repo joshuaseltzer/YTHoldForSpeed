@@ -19,6 +19,21 @@
 
 @end
 
+@interface YTMainAppVideoPlayerOverlayView (YTHFS)
+
+// the original gesture objects that might need to be re-set if any of the tweak preferences are changed during runtime
+@property (nonatomic, retain) UILongPressGestureRecognizer *YTHFSOriginalSeekAnywhereLongPressGesture;
+@property (nonatomic, retain) UIPanGestureRecognizer *YTHFSOriginalSeekAnywherePanGesture;
+@property (nonatomic, retain) UILongPressGestureRecognizer *YTHFSOriginalLongPressGesture;
+
+// clears the original gestures on the overlay view
+- (void)YTHFSClearOriginalGestures;
+
+// re-sets the original gestures on the overlay view if they exist
+- (void)YTHFSSetOriginalGestures;
+
+@end
+
 // define some non-configurable defaults for the long press gesture
 #define kYTHFSNormalPlaybackRate        1.0
 #define kYTHFSNumTouchesRequired        1
@@ -57,10 +72,32 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
                 playerViewController.YTHFSLongPressGesture.numberOfTouchesRequired = kYTHFSNumTouchesRequired;
                 playerViewController.YTHFSLongPressGesture.allowableMovement = kYTHFSAllowableMovement;
                 [playerViewController.playerView addGestureRecognizer:playerViewController.YTHFSLongPressGesture];
+
+                // ensure that the original gestures are properly disabled
+                if ([playerViewController.playerView.overlayView isKindOfClass:objc_getClass("YTMainAppVideoPlayerOverlayView")]) {
+                    YTMainAppVideoPlayerOverlayView *overlayView = (YTMainAppVideoPlayerOverlayView *)playerViewController.playerView.overlayView;
+                    [overlayView YTHFSClearOriginalGestures];
+                }
             }
 
             // update the minimum press duration with whatever the user set in the settings
             playerViewController.YTHFSLongPressGesture.minimumPressDuration = [YTHFSPrefsManager holdDuration];
+        } else {
+            // remove the custom hold gesture if it was previously created
+            if (playerViewController.YTHFSLongPressGesture) {
+                [playerViewController.playerView removeGestureRecognizer:playerViewController.YTHFSLongPressGesture];
+                playerViewController.YTHFSLongPressGesture = nil;
+            }
+
+            // either re-set the stock gestures or ensure they are disabled depending on the tweak preferences
+            if ([playerViewController.playerView.overlayView isKindOfClass:objc_getClass("YTMainAppVideoPlayerOverlayView")]) {
+                YTMainAppVideoPlayerOverlayView *overlayView = (YTMainAppVideoPlayerOverlayView *)playerViewController.playerView.overlayView;
+                if ([YTHFSPrefsManager disableStockGesturesEnabled]) {
+                    [overlayView YTHFSClearOriginalGestures];
+                } else {
+                    [overlayView YTHFSSetOriginalGestures];
+                }
+            }
         }
     }
 
@@ -177,10 +214,18 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 
 %hook YTMainAppVideoPlayerOverlayView
 
+// the original gesture objects that might need to be re-set if any of the tweak preferences are changed during runtime
+%property (nonatomic, retain) UILongPressGestureRecognizer *YTHFSOriginalSeekAnywhereLongPressGesture;
+%property (nonatomic, retain) UIPanGestureRecognizer *YTHFSOriginalSeekAnywherePanGesture;
+%property (nonatomic, retain) UILongPressGestureRecognizer *YTHFSOriginalLongPressGesture;
+
 // override the long press gesture recognizer that is used to invoke the seek gesture
 - (void)setSeekAnywhereLongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer
 {
-    if (![YTHFSPrefsManager holdGestureEnabled] && ![YTHFSPrefsManager disableStockGesturesEnabled]) {
+    if (([YTHFSPrefsManager holdGestureEnabled] || [YTHFSPrefsManager disableStockGesturesEnabled]) && longPressGestureRecognizer != nil) {
+        // keep track of the original gesture in case the preference is changed during runtime
+        self.YTHFSOriginalSeekAnywhereLongPressGesture = longPressGestureRecognizer;
+    } else {
         %orig;
     }
 }
@@ -188,7 +233,10 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 // override the pan gesture recognizer that is used to invoke the seek gesture
 - (void)setSeekAnywherePanGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognzier
 {
-    if (![YTHFSPrefsManager holdGestureEnabled] && ![YTHFSPrefsManager disableStockGesturesEnabled]) {
+    if (([YTHFSPrefsManager holdGestureEnabled] || [YTHFSPrefsManager disableStockGesturesEnabled]) && panGestureRecognzier != nil) {
+        // keep track of the original gesture in case the preference is changed during runtime
+        self.YTHFSOriginalSeekAnywherePanGesture = panGestureRecognzier;
+    } else {
         %orig;
     }
 }
@@ -196,8 +244,41 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 // override the long press gesture recognizer that is used to invoke the seek gesture (introduced with YouTube 18.05.2)
 - (void)setLongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer
 {
-    if (![YTHFSPrefsManager holdGestureEnabled] && ![YTHFSPrefsManager disableStockGesturesEnabled]) {
+    if (([YTHFSPrefsManager holdGestureEnabled] || [YTHFSPrefsManager disableStockGesturesEnabled]) && longPressGestureRecognizer != nil) {
+        // keep track of the original gesture in case the preference is changed during runtime
+        self.YTHFSOriginalLongPressGesture = longPressGestureRecognizer;
+    } else {
         %orig;
+    }
+}
+
+// clears the original gestures on the overlay view
+%new
+- (void)YTHFSClearOriginalGestures
+{
+    if ([self respondsToSelector:@selector(setSeekAnywhereLongPressGestureRecognizer:)]) {
+        [self setSeekAnywhereLongPressGestureRecognizer:nil];
+    }
+    if ([self respondsToSelector:@selector(setSeekAnywherePanGestureRecognizer:)]) {
+        [self setSeekAnywherePanGestureRecognizer:nil];
+    }
+    if ([self respondsToSelector:@selector(setLongPressGestureRecognizer:)]) {
+        [self setLongPressGestureRecognizer:nil];
+    }
+}
+
+// re-sets the original gestures on the overlay view if they exist
+%new
+- (void)YTHFSSetOriginalGestures
+{
+    if ([self respondsToSelector:@selector(setSeekAnywhereLongPressGestureRecognizer:)] && self.YTHFSOriginalSeekAnywhereLongPressGesture != nil) {
+        [self setSeekAnywhereLongPressGestureRecognizer:self.YTHFSOriginalSeekAnywhereLongPressGesture];
+    }
+    if ([self respondsToSelector:@selector(setSeekAnywherePanGestureRecognizer:)] && self.YTHFSOriginalSeekAnywherePanGesture != nil) {
+        [self setSeekAnywherePanGestureRecognizer:self.YTHFSOriginalSeekAnywherePanGesture];
+    }
+    if ([self respondsToSelector:@selector(setLongPressGestureRecognizer:)] && self.YTHFSOriginalLongPressGesture != nil) {
+        [self setLongPressGestureRecognizer:self.YTHFSOriginalLongPressGesture];
     }
 }
 
