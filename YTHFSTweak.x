@@ -222,10 +222,12 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 // override the long press gesture recognizer that is used to invoke the seek gesture
 - (void)setSeekAnywhereLongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer
 {
-    if (([YTHFSPrefsManager holdGestureEnabled] || [YTHFSPrefsManager disableStockGesturesEnabled]) && longPressGestureRecognizer != nil) {
+    if (self.YTHFSOriginalSeekAnywhereLongPressGesture == nil && longPressGestureRecognizer != nil) {
         // keep track of the original gesture in case the preference is changed during runtime
         self.YTHFSOriginalSeekAnywhereLongPressGesture = longPressGestureRecognizer;
-    } else {
+    }
+
+    if ((![YTHFSPrefsManager holdGestureEnabled] && ![YTHFSPrefsManager disableStockGesturesEnabled]) || longPressGestureRecognizer == nil) {
         %orig;
     }
 }
@@ -233,10 +235,12 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 // override the pan gesture recognizer that is used to invoke the seek gesture
 - (void)setSeekAnywherePanGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognzier
 {
-    if (([YTHFSPrefsManager holdGestureEnabled] || [YTHFSPrefsManager disableStockGesturesEnabled]) && panGestureRecognzier != nil) {
+    if (self.YTHFSOriginalSeekAnywherePanGesture == nil && panGestureRecognzier != nil) {
         // keep track of the original gesture in case the preference is changed during runtime
         self.YTHFSOriginalSeekAnywherePanGesture = panGestureRecognzier;
-    } else {
+    }
+
+    if ((![YTHFSPrefsManager holdGestureEnabled] && ![YTHFSPrefsManager disableStockGesturesEnabled]) || panGestureRecognzier == nil) {
         %orig;
     }
 }
@@ -244,10 +248,12 @@ typedef enum YTHFSFeedbackDirection : NSInteger {
 // override the long press gesture recognizer that is used to invoke the seek gesture (introduced with YouTube 18.05.2)
 - (void)setLongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer
 {
-    if (([YTHFSPrefsManager holdGestureEnabled] || [YTHFSPrefsManager disableStockGesturesEnabled]) && longPressGestureRecognizer != nil) {
+    if (self.YTHFSOriginalLongPressGesture == nil && longPressGestureRecognizer != nil) {
         // keep track of the original gesture in case the preference is changed during runtime
         self.YTHFSOriginalLongPressGesture = longPressGestureRecognizer;
-    } else {
+    }
+
+    if ((![YTHFSPrefsManager holdGestureEnabled] && ![YTHFSPrefsManager disableStockGesturesEnabled]) || longPressGestureRecognizer == nil) {
         %orig;
     }
 }
