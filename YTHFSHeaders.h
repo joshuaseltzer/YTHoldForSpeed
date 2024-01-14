@@ -19,6 +19,11 @@
 // the view that is used to display that the double tap to seek gesture was invoked
 @property (readonly, nonatomic) YTDoubleTapToSeekView *doubleTapToSeekView;
 
+// setters for the various gestures used on the overlay view
+- (void)setSeekAnywhereLongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer;
+- (void)setSeekAnywherePanGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognzier;
+- (void)setLongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer;
+
 @end
 
 // the controller responsible for handling changes to the playback speed

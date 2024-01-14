@@ -55,7 +55,7 @@
 
     // create a settings section to enable or disable the hold gesture
     YTSettingsSectionItem *holdGestureSection = [YTSettingsSectionItemClass switchItemWithTitle:[YTHFSPrefsManager localizedStringForKey:@"HOLD_GESTURE" withDefaultValue:@"Hold gesture"]
-        titleDescription:[YTHFSPrefsManager localizedStringForKey:@"HOLD_GESTURE_DESC" withDefaultValue:@"Tap and hold anywhere in the video player to toggle the playback speed between \"Normal\" (i.e. 1.0x) and the selected toggle speed.\n\nPlease be aware that by enabling this feature, the stock \"seek anywhere\" gesture will be disabled."]
+        titleDescription:[YTHFSPrefsManager localizedStringForKey:@"HOLD_GESTURE_DESC" withDefaultValue:@"Tap and hold anywhere in the video player to toggle the playback speed between \"Normal\" (i.e. 1.0x) and the selected toggle speed.\n\nPlease be aware that by enabling this feature, the stock tap and hold gesture will be disabled."]
         accessibilityIdentifier:nil
         switchOn:[YTHFSPrefsManager holdGestureEnabled]
         switchBlock:^BOOL (YTSettingsCell *cell, BOOL enabled) {
@@ -65,7 +65,7 @@
         settingItemId:0];
     [mainSectionItems addObject:holdGestureSection];
 
-    // create a settings section to enable or disable the hold gesture
+    // create a settings section to automatically apply the selected speed
     YTSettingsSectionItem *autoApplySpeedSection = [YTSettingsSectionItemClass switchItemWithTitle:[YTHFSPrefsManager localizedStringForKey:@"AUTO_APPLY_SPEED" withDefaultValue:@"Automatically apply speed"]
         titleDescription:[YTHFSPrefsManager localizedStringForKey:@"AUTO_APPLY_SPEED_DESC" withDefaultValue:@"When enabled, the selected playback speed will automatically be applied when a new video player is launched."]
         accessibilityIdentifier:nil
@@ -139,6 +139,18 @@
         }];
     [mainSectionItems addObject:holdDurationSection];
 
+    // create a settings section to completely disable the stock tap and hold gestures
+    YTSettingsSectionItem *disableStockGesturesSection = [YTSettingsSectionItemClass switchItemWithTitle:[YTHFSPrefsManager localizedStringForKey:@"DISABLE_STOCK_GESTURES" withDefaultValue:@"Disable stock gestures"]
+        titleDescription:[YTHFSPrefsManager localizedStringForKey:@"DISABLE_STOCK_GESTURES_DESC" withDefaultValue:@"Disable the stock tap and hold gestures in the video player.\n\nPlease be aware that if the hold gesture is enabled, the stock gestures will automatically be disabled."]
+        accessibilityIdentifier:nil
+        switchOn:[YTHFSPrefsManager disableStockGesturesEnabled]
+        switchBlock:^BOOL (YTSettingsCell *cell, BOOL enabled) {
+            [YTHFSPrefsManager setDisableStockGesturesEnabled:enabled];
+            return YES;
+        }
+        settingItemId:4];
+    [mainSectionItems addObject:disableStockGesturesSection];
+
     // if available, add a settings section to enable or disable haptic feedback
     if ([YTHFSPrefsManager supportsHapticFeedback]) {
         YTSettingsSectionItem *hapticFeedbackSection = [YTSettingsSectionItemClass switchItemWithTitle:[YTHFSPrefsManager localizedStringForKey:@"HAPTIC_FEEDBACK" withDefaultValue:@"Haptic feedback"]
@@ -149,7 +161,7 @@
                 [YTHFSPrefsManager setHapticFeedbackEnabled:enabled];
                 return YES;
             }
-            settingItemId:4];
+            settingItemId:5];
         [mainSectionItems addObject:hapticFeedbackSection];
     }
 
