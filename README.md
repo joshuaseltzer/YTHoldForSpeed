@@ -1,6 +1,6 @@
 **YTHoldForSpeed** allows you to quickly toggle between a selected video playback speed by tapping and holding on the video player in the YouTube application. There is also the option to automatically apply the selected speed when a new video player is launched.
 
-This tweak was tested on various versions of the YouTube application released between 2020 and 2023 with the last known working version being **18.44.3**. The tweak has been tested on iOS 14.7.1 with checkra1n, iOS 15.1.1 as a sideloaded app, and iOS 15.7.5 with palera1n-c (rootless). It is compatible with all devices on iOS 13 to iOS 16.
+This tweak was tested on various versions of the YouTube application released between 2020 and 2023 with the last known working version being **19.01.1**. The tweak has been tested on iOS 14.7.1 with checkra1n, iOS 15.1.1 as a sideloaded app, and iOS 15.7.5 / 16.4.1 with palera1n-c (rootless). It is compatible with all devices on iOS 13 to iOS 16.
 
 ## *Settings*
 
