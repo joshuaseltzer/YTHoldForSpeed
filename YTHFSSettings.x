@@ -166,11 +166,20 @@
     }
 
     // add all of our settings item to the main settings list
-    [settingsViewController setSectionItems:mainSectionItems
-                                forCategory:kYTHFSHoldForSpeedSection
-                                      title:[YTHFSPrefsManager localizedStringForKey:@"HOLD_FOR_SPEED" withDefaultValue:@"Hold for speed"]
-                           titleDescription:nil
-                               headerHidden:NO];
+    if ([settingsViewController respondsToSelector:@selector(setSectionItems:forCategory:title:icon:titleDescription:headerHidden:)]) {
+        [settingsViewController setSectionItems:mainSectionItems
+                                    forCategory:kYTHFSHoldForSpeedSection
+                                          title:[YTHFSPrefsManager localizedStringForKey:@"HOLD_FOR_SPEED" withDefaultValue:@"Hold for speed"]
+                                           icon:nil
+                               titleDescription:nil
+                                   headerHidden:NO];
+    } else {
+        [settingsViewController setSectionItems:mainSectionItems
+                                    forCategory:kYTHFSHoldForSpeedSection
+                                          title:[YTHFSPrefsManager localizedStringForKey:@"HOLD_FOR_SPEED" withDefaultValue:@"Hold for speed"]
+                               titleDescription:nil
+                                   headerHidden:NO];
+    }
 }
 
 %end

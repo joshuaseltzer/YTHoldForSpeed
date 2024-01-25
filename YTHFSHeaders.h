@@ -95,9 +95,11 @@
 
 @end
 
-// view controller that displays settings information
-@interface YTStyledViewController
+// YTStyledViewController : YTMultiSizeViewController : UIViewController
+@interface YTStyledViewController : UIViewController
 @end
+
+// view controller that displays settings information
 @interface YTSettingsViewController : YTStyledViewController
 
 // reloads the setting sections in the settings view controller
@@ -108,6 +110,9 @@
 
 // sets the array of section items for a given settings category
 - (void)setSectionItems:(NSArray *)sectionItems forCategory:(NSInteger)categoryId title:(NSString *)title titleDescription:(NSString *)titleDescription headerHidden:(BOOL)hidden;
+
+// updated setSectionItems implementation introduced in YouTube 19.03.2
+- (void)setSectionItems:(NSArray *)sectionItems forCategory:(NSInteger)categoryId title:(NSString *)title icon:(id)icon titleDescription:(NSString *)titleDescription headerHidden:(BOOL)hidden;
 
 @end
 
