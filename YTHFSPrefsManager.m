@@ -22,7 +22,7 @@
 #define kYTHFSDefaultHoldGestureEnabled             NO
 #define kYTHFSDefaultDisableStockGesturesEnabled    NO
 #define kYTHFSDefaultAutoApplyRateEnabled           NO
-#define kYTHFSDefaultTogglePlaybackRate             1.5
+#define kYTHFSDefaultTogglePlaybackRate             2.0
 #define kYTHFSDefaultHoldDuration                   1.0
 
 // create static variables that will be determined once
@@ -110,7 +110,7 @@ static NSNumberFormatter *sYTHFSDecimalNumberFormatter;
     if (value > 1.00) {
         ++playbackRateOptionOffset;
     }
-    return MAX(MIN((NSInteger)(value / 0.25) - playbackRateOptionOffset, kYTHFSPlaybackRateOption200), kYTHFSPlaybackRateOption025);
+    return MAX(MIN((NSInteger)(value / 0.25) - playbackRateOptionOffset, kYTHFSPlaybackRateOption500), kYTHFSPlaybackRateOption025);
 }
 
 // return the appropriate string representation of the hold duration for the given value

@@ -88,7 +88,7 @@
         selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {
             // create a new section item for each toggle rate option that the user can select
             NSMutableArray *playbackRateSectionRows = [NSMutableArray array];
-            for (NSInteger currentRow = kYTHFSPlaybackRateOption025; currentRow <= kYTHFSPlaybackRateOption200; ++currentRow) {
+            for (NSInteger currentRow = kYTHFSPlaybackRateOption025; currentRow <= kYTHFSPlaybackRateOption500; ++currentRow) {
                 CGFloat playbackRateForRow = [YTHFSPrefsManager playbackRateValueForOption:currentRow];
                 YTSettingsSectionItem *rateSection = [YTSettingsSectionItemClass checkmarkItemWithTitle:[YTHFSPrefsManager playbackRateStringForValue:playbackRateForRow]
                     selectBlock:^BOOL (YTSettingsCell *cell, NSUInteger arg1) {

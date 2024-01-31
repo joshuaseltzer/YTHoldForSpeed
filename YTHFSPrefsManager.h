@@ -28,7 +28,19 @@ typedef enum YTHFSPlaybackRateOption : NSInteger {
     kYTHFSPlaybackRateOption125,
     kYTHFSPlaybackRateOption150,
     kYTHFSPlaybackRateOption175,
-    kYTHFSPlaybackRateOption200
+    kYTHFSPlaybackRateOption200,
+    kYTHFSPlaybackRateOption225,
+    kYTHFSPlaybackRateOption250,
+    kYTHFSPlaybackRateOption275,
+    kYTHFSPlaybackRateOption300,
+    kYTHFSPlaybackRateOption325,
+    kYTHFSPlaybackRateOption350,
+    kYTHFSPlaybackRateOption375,
+    kYTHFSPlaybackRateOption400,
+    kYTHFSPlaybackRateOption425,
+    kYTHFSPlaybackRateOption450,
+    kYTHFSPlaybackRateOption475,
+    kYTHFSPlaybackRateOption500
 } YTHFSPlaybackRateOption;
 
 // manager that manages the preferences for the tweak
