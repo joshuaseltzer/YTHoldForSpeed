@@ -167,10 +167,12 @@
 
     // add all of our settings item to the main settings list
     if ([settingsViewController respondsToSelector:@selector(setSectionItems:forCategory:title:icon:titleDescription:headerHidden:)]) {
+        YTIIcon *icon = [%c(YTIIcon) new];
+        icon.iconType = 530; // TUNE
         [settingsViewController setSectionItems:mainSectionItems
                                     forCategory:kYTHFSHoldForSpeedSection
                                           title:[YTHFSPrefsManager localizedStringForKey:@"HOLD_FOR_SPEED" withDefaultValue:@"Hold for speed"]
-                                           icon:nil
+                                           icon:icon
                                titleDescription:nil
                                    headerHidden:NO];
     } else {

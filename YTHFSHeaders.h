@@ -141,3 +141,14 @@
 + (id)checkmarkItemWithTitle:(NSString *)title selectBlock:(id)selectBlock;
 
 @end
+
+// defined for setting an icon for grouped settings
+@interface GPBMessage : NSObject
++ (id)parseFromData:(id)data;
++ (id)parseFromData:(id)data error:(NSError **)error;
+- (id)firstSubmessage;
+- (void)clear;
+@end
+@interface YTIIcon : GPBMessage
+@property (nonatomic, assign, readwrite) NSUInteger iconType;
+@end
