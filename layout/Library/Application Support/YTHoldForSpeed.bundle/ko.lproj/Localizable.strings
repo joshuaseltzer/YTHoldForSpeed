@@ -1,0 +1,15 @@
+"HOLD_FOR_SPEED" = "길게 눌러 속도 전환";
+"NORMAL" = "기본";
+"X_SECONDS" = "%@초";
+"HOLD_GESTURE" = "길게 누르기 제스처";
+"HOLD_GESTURE_DESC" = "동영상 플레이어의 아무 곳이나 길게 눌러 재생 속도를 \"기본\"(예: 1.0배)과 선택한 전환 속도 간에 변경합니다.\n\n이 기능을 활성화하면 앱 기본 길게 누르기 제스처는 비활성화됩니다.";
+"DISABLE_STOCK_GESTURES" = "기본 제스처 비활성화";
+"DISABLE_STOCK_GESTURES_DESC" = "동영상 플레이어의 기본 길게 누르기 제스처를 비활성화합니다.\n\n길게 누르기 제스처가 활성화되어 있으면 기본 제스처는 자동으로 비활성화됩니다.";
+"AUTO_APPLY_SPEED" = "재생 속도 자동 적용";
+"AUTO_APPLY_SPEED_DESC" = "활성화하면 새 동영상을 재생할 때 선택한 재생 속도가 자동으로 적용됩니다.";
+"TOGGLE_SPEED" = "전환 속도";
+"TOGGLE_SPEED_DESC" = "길게 누르기 제스처 동작 시 전환할 동영상 재생 속도입니다.";
+"HOLD_DURATION" = "길게 누르기 인식 시간";
+"HOLD_DURATION_DESC" = "길게 누르기 제스처로 재생 속도를 전환하는 데 필요한 시간(초 단위)입니다.";
+"HAPTIC_FEEDBACK" = "햅틱 피드백";
+"HAPTIC_FEEDBACK_DESC" = "동영상 플레이어의 재생 속도가 전환될 때 햅틱 피드백으로 알립니다.";
