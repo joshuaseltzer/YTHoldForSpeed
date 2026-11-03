@@ -8,7 +8,7 @@
 #import "YTHFSPrefsManager.h"
 #import <CoreHaptics/CoreHaptics.h>
 #import <sys/utsname.h>
-#import <rootless.h>
+#import <PSHeader/Misc.h>
 
 // define constants for the keys used to interact with the settings within user defaults
 #define kYTHFSHoldGestureEnabledKey             @"YTHFSHoldGestureEnabled"
@@ -184,7 +184,7 @@ static NSNumberFormatter *sYTHFSDecimalNumberFormatter;
         if (bundlePath) {
             sYTHFSBundle = [NSBundle bundleWithPath:bundlePath];
         } else {
-            sYTHFSBundle = [NSBundle bundleWithPath:ROOT_PATH_NS(@"/Library/Application Support/YTHoldForSpeed.bundle")];
+            sYTHFSBundle = [NSBundle bundleWithPath:PS_ROOT_PATH_NS(@"/Library/Application Support/YTHoldForSpeed.bundle")];
         }
     });
     return sYTHFSBundle;

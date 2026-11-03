@@ -7,6 +7,7 @@
 
 #import "YTHFSHeaders.h"
 #import "YTHFSPrefsManager.h"
+#import <YouTubeHeader/YTSettingsGroupData.h>
 
 @interface YTSettingsSectionItemManager (YTHFS)
 
@@ -18,18 +19,34 @@
 // define the section number that is used to indicate the tweak's settings
 #define kYTHFSHoldForSpeedSection      2168
 
+%hook YTSettingsGroupData
+
+- (NSArray <NSNumber *> *)orderedCategories
+{
+    if (self.type != 1 || class_getClassMethod(objc_getClass("YTSettingsGroupData"), @selector(tweaks))) {
+        return %orig;
+    }
+    NSArray *categories = %orig;
+    NSMutableArray *mutableCategories = [categories mutableCopy];
+    [mutableCategories insertObject:@(kYTHFSHoldForSpeedSection) atIndex:0];
+    return [mutableCategories copy];
+}
+
+%end
+
 %hook YTAppSettingsPresentationData
 
 // set the order of the settings and insert our custom settings for the tweak
-+ (NSArray *)settingsCategoryOrder
++ (NSArray <NSNumber *> *)settingsCategoryOrder
 {
     NSArray *order = %orig;
-    NSMutableArray *mutableOrder = [order mutableCopy];
     NSUInteger insertIndex = [order indexOfObject:@(1)];
     if (insertIndex != NSNotFound) {
+        NSMutableArray *mutableOrder = [order mutableCopy];
         [mutableOrder insertObject:@(kYTHFSHoldForSpeedSection) atIndex:insertIndex + 1];
+        order = [mutableOrder copy];
     }
-    return [mutableOrder copy];
+    return order;
 }
 
 %end
